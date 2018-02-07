@@ -11,9 +11,9 @@
 class RayCastHit {
 public:
     RayCastHit();
-    void setIntersectionPoint(Vector intesectionPoint);
+    void setIntersectionPoint(Vector intersectionPoint);
     void setDistance(double distance);
-    Vector getIntesectionPoint() const ;
+    Vector getIntersectionPoint() const ;
     double getDistance() const ;
 private:
     Vector intersectionPoint;

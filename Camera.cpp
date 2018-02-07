@@ -31,14 +31,22 @@ void Camera::setPosition(Vector &position) {
 }
 
 Ray Camera::generateRay(double x, double y) const {
+
     // calculate the origin of the ray
     Vector rayOrigin = this->position + (this->direction.negative() * this->centerPos);
     // calculate the point on the camera
-    Vector leftBottomCameraPoint = (this->upAxis.negative() * (this->height / 2))
+    Vector leftBottomCameraPoint = this->position + (this->upAxis.negative() * (this->height / 2))
                                 + (this->rightAxis.negative() * (this->width / 2));
     Vector cameraPoint = leftBottomCameraPoint + (this->rightAxis * x * this->width)
                          + (this->upAxis * y * this->height);
-    Vector rayDirection = cameraPoint - rayOrigin;
+
+    // if orthographic
+    if (this->centerPos == INFINITY) {
+        Vector rayDirection = (this->direction).normalize();
+        return Ray(cameraPoint, rayDirection);
+    }
+
+    Vector rayDirection = (cameraPoint - rayOrigin).normalize();
     return Ray(rayOrigin, rayDirection);
 }
 

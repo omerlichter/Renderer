@@ -8,7 +8,8 @@
 enum Event {
     START_RENDERING,
     END_RENDERING,
-    WRITE_BMP
+    WRITE_BMP,
+    OBJECT_INTERSECTION
 };
 
 

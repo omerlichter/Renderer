@@ -3,6 +3,7 @@
 //
 
 #include "Renderer.h"
+#include "pixel.h"
 
 #define WIDTH 1920;
 #define HEIGHT 1080;
@@ -21,24 +22,19 @@ void Renderer::render(Scene &scene) {
 
 
     for (int i = 0; i < height; i++) {
-        int line  = i * width;
+        int line = i * width;
         for (int j = 0; j < width; j++) {
             int pixelNum = line + j;
 
             // generate pixel from camera
-            Ray ray = main_camera.generateRay(j * (1 / (double)width),
-                                              i * (1 / (double)height));
+            Ray ray = main_camera.generateRay(j * (1 / (double) width),
+                                              i * (1 / (double) height));
 
-            Vector intersectionPoint;
-            if (scene.getIntersectionPoint(ray, intersectionPoint)) {
-                pixels[pixelNum].r = 0.2; //* (1 - (intersectionPoint.getz() * intersectionPoint.getz()));
-                pixels[pixelNum].g = 0.2; //* (1 - (intersectionPoint.getz() * intersectionPoint.getz()));
-                pixels[pixelNum].b = 0.2; //* (1 - (intersectionPoint.getz() * intersectionPoint.getz()));
-            } else {
-                pixels[pixelNum].r = 0;
-                pixels[pixelNum].g = 0;
-                pixels[pixelNum].b = 0;
-            }
+            Pixel pixel = this->calculatePixelColor(scene, ray);
+
+            pixels[pixelNum].r = Pixel::Clamp(pixel.r);
+            pixels[pixelNum].g = Pixel::Clamp(pixel.g);
+            pixels[pixelNum].b = Pixel::Clamp(pixel.b);
         }
     }
 
@@ -51,6 +47,26 @@ void Renderer::render(Scene &scene) {
     writeBMP.write("test.bmp", width, height, pixels);
 }
 
-Pixel Renderer::calculatePixelColor() const {
+Pixel Renderer::calculatePixelColor(Scene &scene, Ray &ray) {
+    Pixel pixel;
+    Vector intersectionPoint;
+    Object *object;
+    if (scene.getIntersectionPoint(ray, intersectionPoint, object)) {
+        //this->notifyAll(OBJECT_INTERSECTION);
+        Vector normal = object->getNormalAt(intersectionPoint);
+        Vector negLightDirection = scene.getDirectionalLight().getDirection().negative();
 
+        double lightAngle = normal.dotProduct(negLightDirection);
+
+
+        pixel.r = 1 * lightAngle;
+        pixel.g = 1 * lightAngle;
+        pixel.b = 1 * lightAngle;
+    }
+    else {
+        pixel.r = 0;
+        pixel.g = 0;
+        pixel.b = 0;
+    }
+    return pixel;
 }

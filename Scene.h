@@ -8,16 +8,19 @@
 #include <vector>
 #include "Camera.h"
 #include "Object.h"
+#include "DirectionalLight.h"
 
 class Scene {
 public:
-    Scene(Camera &camera, vector<Object*> &objects);
+    Scene(Camera &camera, DirectionalLight &directionalLight , vector<Object*> &objects);
     Camera &getCamera() const ;
+    DirectionalLight &getDirectionalLight() const ;
     vector<Object*>& getObjectsList() const ;
 
-    bool getIntersectionPoint(Ray &ray, Vector &intersectionPoint) const ;
+    bool getIntersectionPoint(Ray &ray, Vector &intersectionPoint, Object *&intersectionObject) const ;
 private:
     Camera &camera;
+    DirectionalLight &directionalLight;
     vector<Object*> &objectsList;
 };
 

@@ -15,7 +15,7 @@ Sphere::Sphere(double x, double y, double z, double radius) {
 }
 
 bool Sphere::getIntersection(Ray &ray, RayCastHit &rayCastHit) {
-    Vector o = ray.getOrigin().normalize();
+    Vector o = ray.getOrigin();
     Vector d = ray.getDirection().normalize();
     Vector l = this->position - ray.getOrigin();
     double tca = l.dotProduct(d);
@@ -57,4 +57,8 @@ bool Sphere::getIntersection(Ray &ray, RayCastHit &rayCastHit) {
         }
         return true;
     }
+}
+
+Vector Sphere::getNormalAt(Vector &position) {
+    return (position - this->position).normalize();
 }

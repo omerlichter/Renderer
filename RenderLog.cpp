@@ -15,5 +15,8 @@ void RenderLog::notify(Event event) {
         case WRITE_BMP:
             cout << "write BMP file of the finale render" << endl;
             break;
+        case OBJECT_INTERSECTION:
+            cout << "object intersection" << endl;
+            break;
     }
 }

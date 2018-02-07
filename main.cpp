@@ -11,19 +11,22 @@ int main() {
     renderer.addListener(renderLog);
 
     // create camera
-    Vector cameraPos(0 ,0 ,0);
+    Vector cameraPos(0, 0, 0);
     Vector cameraDir(0, 0, 1);
-    Camera camera(2, 1.777, cameraPos, cameraDir, 20);
+    Camera camera(1, 1.777, cameraPos, cameraDir, 30);
+
+    // create light
+    Vector lightDirection(1, -1, 1);
+    Color color(1, 1, 1);
+    DirectionalLight directionalLight(lightDirection, color);
 
     // create vector of objects
     vector<Object*> objectsList;
     // add sphere
     Object *sphere1 = new Sphere(0, 0, 2, 0.5);
     objectsList.push_back(sphere1);
-    Object *sphere2 = new Sphere(0.5, 0, 1, 0.5);
-    objectsList.push_back(sphere2);
 
-    Scene scene(camera, objectsList);
+    Scene scene(camera, directionalLight, objectsList);
     renderer.render(scene);
     return 0;
 }

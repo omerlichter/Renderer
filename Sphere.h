@@ -13,6 +13,7 @@ public:
     Sphere(Vector &position, double radius);
     Sphere(double x, double y, double z, double radius);
     virtual bool getIntersection(Ray &ray, RayCastHit &rayCastHit);
+    virtual Vector getNormalAt(Vector &position);
 
 private:
     Vector position;

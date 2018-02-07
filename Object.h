@@ -7,12 +7,11 @@
 
 
 #include "Vector.h"
-#include "Ray.h"
-#include "RayCastHit.h"
+#include "Collidable.h"
 
-class Object {
+class Object : public Collidable {
 public:
-    virtual bool getIntersection(Ray &ray, RayCastHit &rayCastHit) = 0;
+
 private:
 };
 

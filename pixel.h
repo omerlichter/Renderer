@@ -10,6 +10,14 @@ typedef struct {
     double g;
     double b;
     double a;
-} Pixel;
 
+    static double Clamp(double value) {
+        if (value < 0) {
+            value = 0;
+        } else if (value > 1) {
+            value = 1;
+        }
+        return value;
+    }
+} Pixel;
 #endif //RENDERER_PIXEL_H

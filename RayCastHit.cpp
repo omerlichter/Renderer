@@ -8,7 +8,7 @@ RayCastHit::RayCastHit() {
 
 }
 
-Vector RayCastHit::getIntesectionPoint() const {
+Vector RayCastHit::getIntersectionPoint() const {
     return this->intersectionPoint;
 }
 
@@ -16,8 +16,8 @@ double RayCastHit::getDistance() const {
     return this->distance;
 }
 
-void RayCastHit::setIntersectionPoint(Vector intesectionPoint) {
-    this->intersectionPoint = intesectionPoint;
+void RayCastHit::setIntersectionPoint(Vector intersectionPoint) {
+    this->intersectionPoint = intersectionPoint;
 }
 
 void RayCastHit::setDistance(double distance) {
