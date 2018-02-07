@@ -1,2 +1,0 @@
-# Renderer
-Simple render engine
