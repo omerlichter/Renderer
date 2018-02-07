@@ -7,11 +7,11 @@
 void WriteBMP::write(const char *fileName, int w, int h, Pixel *data) const {
     FILE *file;
     int k = w * h;
-    int size = k * 3;
+    int size = k * 4;
     int fileSize = size + 54;
 
     unsigned char bmpFileHeader[14] = {'B','M', 0,0,0,0, 0,0,0,0, 54,0,0,0};
-    unsigned char bmpInfoHeader[40] = {40,0,0,0, 0,0,0,0, 0,0,0,0, 1,0,24,0};
+    unsigned char bmpInfoHeader[40] = {40,0,0,0, 0,0,0,0, 0,0,0,0, 1,0,32,0};
 
     bmpFileHeader[2] = (unsigned char) (fileSize);
     bmpFileHeader[3] = (unsigned char) (fileSize >> 8);
@@ -43,10 +43,11 @@ void WriteBMP::write(const char *fileName, int w, int h, Pixel *data) const {
         double red = pixel.r * 255;
         double green = pixel.g * 255;
         double blue = pixel.b * 255;
+        double alpha = pixel.a * 255;
 
-        unsigned char color[3] = {(unsigned char) blue, (unsigned char) green, (unsigned char) red};
+        unsigned char color[4] = {(unsigned char) blue, (unsigned char) green, (unsigned char) red, (unsigned) alpha};
 
-        fwrite(color, 1, 3, file);
+        fwrite(color, 1, 4, file);
     }
     fclose(file);
 }

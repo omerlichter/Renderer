@@ -10,14 +10,16 @@
 
 class Sphere : public Object {
 public:
-    Sphere(Vector &position, double radius);
-    Sphere(double x, double y, double z, double radius);
+    Sphere(Vector &position, double radius, Color &color);
+    Sphere(double x, double y, double z, double radius, Color &color);
     virtual bool getIntersection(Ray &ray, RayCastHit &rayCastHit);
     virtual Vector getNormalAt(Vector &position);
+    virtual Color getColorAt(Vector &position);
 
 private:
     Vector position;
     double radius;
+    Color color;
 };
 
 

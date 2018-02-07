@@ -58,15 +58,18 @@ Pixel Renderer::calculatePixelColor(Scene &scene, Ray &ray) {
 
         double lightAngle = normal.dotProduct(negLightDirection);
 
+        Color pixelColor = object->getColorAt(intersectionPoint) * lightAngle *
+                scene.getDirectionalLight().getColor();
 
-        pixel.r = 1 * lightAngle;
-        pixel.g = 1 * lightAngle;
-        pixel.b = 1 * lightAngle;
+        pixel.r = pixelColor.getRed();
+        pixel.g = pixelColor.getGreen();
+        pixel.b = pixelColor.getBlue();
     }
     else {
         pixel.r = 0;
         pixel.g = 0;
         pixel.b = 0;
+        pixel.a = 1;
     }
     return pixel;
 }
