@@ -52,5 +52,5 @@ void Renderer::render(Scene &scene) {
 }
 
 Pixel Renderer::calculatePixelColor() const {
-    
+
 }
