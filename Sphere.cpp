@@ -4,16 +4,14 @@
 
 #include "Sphere.h"
 
-Sphere::Sphere(Vector &position, double radius, Color &color) {
+Sphere::Sphere(Vector &position, double radius, Material &material) : material(material) {
     this->position = position;
     this->radius = radius;
-    this->color = color;
 }
 
-Sphere::Sphere(double x, double y, double z, double radius, Color &color) {
+Sphere::Sphere(double x, double y, double z, double radius, Material &material) : material(material) {
     this->position = Vector(x, y, z);
     this->radius = radius;
-    this->color = color;
 }
 
 bool Sphere::getIntersection(Ray &ray, RayCastHit &rayCastHit) {
@@ -65,6 +63,6 @@ Vector Sphere::getNormalAt(Vector &position) {
     return (position - this->position).normalize();
 }
 
-Color Sphere::getColorAt(Vector &position) {
-    return this->color;
+Material& Sphere::getMaterial() {
+    return this->material;
 }

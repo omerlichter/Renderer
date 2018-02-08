@@ -18,7 +18,7 @@ class Renderer : public Notifier {
 public:
     void render(Scene &scene);
 private:
-    Pixel calculatePixelColor(Scene &scene, Ray &ray);
+    Color calculatePixelColor(Scene &scene, Ray &ray);
 };
 
 

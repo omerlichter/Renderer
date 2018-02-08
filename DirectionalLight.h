@@ -11,12 +11,14 @@
 
 class DirectionalLight {
 public:
-    DirectionalLight(Vector &direction, Color &color);
+    DirectionalLight(Vector &direction, Color &diffuseColor, Color &specularColor);
     Vector &getDirection();
-    Color &getColor();
+    Color &getDiffuseColor();
+    Color &getSpecularColor();
 private:
     Vector direction;
-    Color color;
+    Color diffuseColor;
+    Color specularColor;
 };
 
 

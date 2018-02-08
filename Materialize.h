@@ -5,13 +5,11 @@
 #ifndef RENDERER_MATERIALIZE_H
 #define RENDERER_MATERIALIZE_H
 
-
-#include "Color.h"
-#include "Vector.h"
+#include "Material.h"
 
 class Materialize {
 public:
-    virtual Color getColorAt(Vector &position) = 0;
+    virtual Material &getMaterial() = 0;
 };
 
 

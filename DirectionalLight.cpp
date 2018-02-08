@@ -4,15 +4,20 @@
 
 #include "DirectionalLight.h"
 
-DirectionalLight::DirectionalLight(Vector &direction, Color &color) {
+DirectionalLight::DirectionalLight(Vector &direction, Color &diffuseColor, Color &specularColor) {
     this->direction = direction.normalize();
-    this->color = color;
+    this->diffuseColor = diffuseColor;
+    this->specularColor = specularColor;
 }
 
 Vector& DirectionalLight::getDirection() {
     return this->direction;
 }
 
-Color& DirectionalLight::getColor() {
-    return this->color;
+Color& DirectionalLight::getDiffuseColor() {
+    return this->diffuseColor;
+}
+
+Color& DirectionalLight::getSpecularColor() {
+    return this->specularColor;
 }
