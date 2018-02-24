@@ -7,6 +7,7 @@
 
 
 #include "Object.h"
+#include "ZeroMapping.h"
 
 class Sphere : public Object {
 public:
@@ -15,11 +16,13 @@ public:
     virtual bool getIntersection(Ray &ray, RayCastHit &rayCastHit);
     virtual Vector getNormalAt(Vector &position);
     virtual Material &getMaterial();
+    virtual Mapping &getMapping();
 
 private:
     Vector position;
     double radius;
     Material &material;
+    ZeroMapping mapping;
 };
 
 

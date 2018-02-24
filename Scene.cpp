@@ -4,8 +4,8 @@
 
 #include "Scene.h"
 
-Scene::Scene(Camera &camera, DirectionalLight &directionalLight, vector<Object*> &objects) :
-        camera(camera), directionalLight(directionalLight), objectsList(objects) {
+Scene::Scene(Camera &camera, Color &ambientColor, vector<Light*> &lights, vector<Object*> &objects) :
+        camera(camera), ambientColor(ambientColor), lightsList(lights), objectsList(objects) {
 
 }
 
@@ -13,8 +13,12 @@ Camera& Scene::getCamera() const {
     return this->camera;
 }
 
-DirectionalLight& Scene::getDirectionalLight() const {
-    return this->directionalLight;
+Color& Scene::getAmbientColor() const {
+    return this->ambientColor;
+}
+
+vector<Light*>& Scene::getLightsList() const {
+    return this->lightsList;
 }
 
 vector<Object*>& Scene::getObjectsList() const {

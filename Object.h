@@ -9,8 +9,9 @@
 #include "Vector.h"
 #include "Collidable.h"
 #include "Materialize.h"
+#include "Mapped.h"
 
-class Object : public Collidable, public Materialize {
+class Object : public Collidable, public Materialize, public Mapped {
 public:
 
 private:

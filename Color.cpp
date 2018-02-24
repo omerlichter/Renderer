@@ -27,6 +27,13 @@ Color Color::operator+(const Color &color) const {
     return Color(this->r + color.r, this->g + color.g, this->b + color.b, this->a + color.a);
 }
 
+void Color::operator+=(const Color &color) {
+    this->r += color.r;
+    this->g += color.g;
+    this->b += color.b;
+    this->a += color.a;
+}
+
 Color Color::operator-(const Color &color) const {
     return Color(this->r - color.r, this->g - color.g, this->b - color.b, this->a - color.a);
 }
@@ -37,6 +44,11 @@ Color Color::operator*(const Color &color) const {
 
 Color Color::operator*(double value) const {
     return Color(this->r * value, this->g * value, this->b * value, this->a * value);
+}
+
+double Color::grayScale() {
+    return ((this->r + this->g + this->b) / 3);
+
 }
 
 Color operator*(double value, const Color &color) {

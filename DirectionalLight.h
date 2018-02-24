@@ -8,14 +8,17 @@
 
 #include "Vector.h"
 #include "Color.h"
+#include "Light.h"
 
-class DirectionalLight {
+class DirectionalLight : public Light {
 public:
-    DirectionalLight(Vector &direction, Color &diffuseColor, Color &specularColor);
-    Vector &getDirection();
-    Color &getDiffuseColor();
-    Color &getSpecularColor();
+    DirectionalLight(double intensity, Vector &direction, Color &diffuseColor, Color &specularColor);
+    virtual Vector getDirectionAt(Vector &point);
+    virtual double getIntensityAt(Vector &point);
+    virtual Color getDiffuseColor();
+    virtual Color getSpecularColor();
 private:
+    double intensity;
     Vector direction;
     Color diffuseColor;
     Color specularColor;

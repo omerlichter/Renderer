@@ -21,3 +21,7 @@ Color DiffuseSpecularMat::getSpecularColorAt(Vector &position) {
 double DiffuseSpecularMat::getSpecularHardnessAt(Vector &position) {
     return this->specularHardness;
 }
+
+double DiffuseSpecularMat::getReflectionValueAt(Vector &position) {
+    return 0;
+}

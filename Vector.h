@@ -28,6 +28,7 @@ public:
     Vector negative() const ;
     double dotProduct(Vector &other) const ;
     Vector crossProduct(Vector &other) const ;
+    bool operator ==(const Vector &other) const ;
     friend ostream &operator <<(ostream &out, const Vector &vector);
 private:
     double x;

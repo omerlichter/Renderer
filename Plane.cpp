@@ -4,14 +4,13 @@
 
 #include "Plane.h"
 
-Plane::Plane(Vector &normal, double distance, Material &material) : material(material) {
-    this->normal = normal.normalize();
-    this->distance = distance;
+Plane::Plane(Vector &normal, double distance, Material &material) :
+        material(material), normal(normal.normalize()), distance(distance), mapping(normal, distance) {
 }
 
-Plane::Plane(double x, double y, double z, double distance, Material &material) : material(material) {
-    this->normal = Vector(x, y, z).normalize();
-    this->distance = distance;
+Plane::Plane(double x, double y, double z, double distance, Material &material) :
+        normal(Vector(x, y, z).normalize()), distance(distance), material(material),
+        mapping(normal, distance) {
 }
 
 Vector Plane::getNormalAt(Vector &position) {
@@ -38,4 +37,16 @@ bool Plane::getIntersection(Ray &ray, RayCastHit &rayCastHit) {
 
 Material& Plane::getMaterial() {
     return this->material;
+}
+
+Mapping& Plane::getMapping() {
+    return this->mapping;
+}
+
+Vector& Plane::getNormal() {
+    return this->normal;
+}
+
+double Plane::getDistance() {
+    return this->distance;
 }

@@ -7,6 +7,7 @@
 
 
 #include "Object.h"
+#include "PlaneMapping.h"
 
 class Plane : public Object {
 public:
@@ -15,11 +16,16 @@ public:
     virtual bool getIntersection(Ray &ray, RayCastHit &rayCastHit);
     virtual Vector getNormalAt(Vector &position);
     virtual Material &getMaterial();
+    virtual Mapping &getMapping();
+
+    Vector &getNormal();
+    double getDistance();
 
 private:
     Vector normal;
     double distance;
     Material &material;
+    PlaneMapping mapping;
 };
 
 

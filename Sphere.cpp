@@ -4,12 +4,13 @@
 
 #include "Sphere.h"
 
-Sphere::Sphere(Vector &position, double radius, Material &material) : material(material) {
+Sphere::Sphere(Vector &position, double radius, Material &material) : material(material), mapping() {
     this->position = position;
     this->radius = radius;
 }
 
-Sphere::Sphere(double x, double y, double z, double radius, Material &material) : material(material) {
+Sphere::Sphere(double x, double y, double z, double radius, Material &material) : material(material),
+                                                                                  mapping() {
     this->position = Vector(x, y, z);
     this->radius = radius;
 }
@@ -65,4 +66,8 @@ Vector Sphere::getNormalAt(Vector &position) {
 
 Material& Sphere::getMaterial() {
     return this->material;
+}
+
+Mapping& Sphere::getMapping() {
+    return this->mapping;
 }

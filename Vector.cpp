@@ -67,6 +67,10 @@ double Vector::getz() const {
     return this->z;
 }
 
+bool Vector::operator==(const Vector &other) const {
+    return ((other.x == this->x) && (other.y == this->y) && (other.z == this->z));
+}
+
 ostream &operator <<(ostream &out, const Vector &vector) {
     out << "(" << vector.x << ", " << vector.y << ", " << vector.z << ")";
     return out;

@@ -3,7 +3,6 @@
 //
 
 #include "Renderer.h"
-#include "pixel.h"
 
 #define WIDTH 1920;
 #define HEIGHT 1080;
@@ -30,12 +29,16 @@ void Renderer::render(Scene &scene) {
             Ray ray = main_camera.generateRay(j * (1 / (double) width),
                                               i * (1 / (double) height));
 
-            Color pixelColor = this->calculatePixelColor(scene, ray);
+            Color pixelColor = this->calculatePixelColor(scene, ray, 8);
 
             pixels[pixelNum].r = Pixel::Clamp(pixelColor.getRed());
             pixels[pixelNum].g = Pixel::Clamp(pixelColor.getGreen());
             pixels[pixelNum].b = Pixel::Clamp(pixelColor.getBlue());
-            pixels[pixelNum].a = Pixel::Clamp(pixelColor.getAlpha());
+            if (pixelColor.getAlpha() > 0) {
+                pixels[pixelNum].a = 1;
+            } else {
+                pixels[pixelNum].a = 0;
+            }
         }
     }
 
@@ -48,38 +51,77 @@ void Renderer::render(Scene &scene) {
     writeBMP.write("test.bmp", width, height, pixels);
 }
 
-Color Renderer::calculatePixelColor(Scene &scene, Ray &ray) {
+Color Renderer::calculatePixelColor(Scene &scene, Ray &ray, int reflectionDeep) {
     Color pixelColor;
     Vector intersectionPoint;
     Object *object;
     if (scene.getIntersectionPoint(ray, intersectionPoint, object)) {
-        //this->notifyAll(OBJECT_INTERSECTION);
+
         Material &objectMaterial = object->getMaterial();
+        Mapping &objectMapping = object->getMapping();
+        Vector intersectionMapping = objectMapping.getMapCoordinates(intersectionPoint);
         Vector normal = object->getNormalAt(intersectionPoint);
-        Vector lightDirection = scene.getDirectionalLight().getDirection();
-        Vector negLightDirection = lightDirection.negative();
+        Vector rayDirection = ray.getDirection();
+        Vector negRayDirection = rayDirection.negative();
+        vector<Light*> &lightsList = scene.getLightsList();
 
-        // calculate light angle for diffuse
-        double lightAngle = normal.dotProduct(negLightDirection);
+        pixelColor += scene.getAmbientColor() * objectMaterial.getDiffuseColorAt(intersectionMapping);
 
-        // calculate specular value
-        Vector doubledNormalDot = 2 * (lightAngle * normal);
-        Vector reflectionDirection = lightDirection + doubledNormalDot;
-        double specularValue = ray.getDirection().negative().dotProduct(reflectionDirection);
-        if (specularValue > 0) {
-            specularValue = pow(specularValue, objectMaterial.getSpecularHardnessAt(intersectionPoint));
-        } else {
-            specularValue = 0;
+        for (vector<Light*>::iterator it = lightsList.begin(); it != lightsList.end(); it++) {
+            Light *light = *it;
+            Vector lightDirection = light->getDirectionAt(intersectionPoint);
+            Vector negLightDirection = lightDirection.negative();
+
+            // shadow light
+            bool isShadowed = false;
+            Vector shadowRayOrigin = intersectionPoint + (negLightDirection * 0.0001);
+            Ray shadowRay(shadowRayOrigin, negLightDirection);
+            Vector shadowRayIntersection;
+            Object *shadowRayIntersectionObject;
+            // ------- if is shadowed ----------
+            if (scene.getIntersectionPoint(shadowRay, shadowRayIntersection, shadowRayIntersectionObject)) {
+                isShadowed = true;
+            }
+
+            // ------- if is not shadowed ---------
+            if (isShadowed == false) {
+                // calculate diffuse
+                double lightAngle = normal.dotProduct(negLightDirection);
+                pixelColor += objectMaterial.getDiffuseColorAt(intersectionMapping) *
+                                          lightAngle * light->getDiffuseColor() *
+                                          light->getIntensityAt(intersectionPoint);
+
+                // calculate specular
+                Vector doubledNormalDot = 2 * (lightAngle * normal);
+                Vector specularDirection = lightDirection + doubledNormalDot;
+                double specularValue = negRayDirection.dotProduct(specularDirection);
+                if (specularValue > 0) {
+                    specularValue = pow(specularValue,
+                                        objectMaterial.getSpecularHardnessAt(intersectionMapping));
+                } else {
+                    specularValue = 0;
+                }
+                pixelColor += objectMaterial.getSpecularColorAt(intersectionMapping) *
+                                          specularValue * light->getSpecularColor() *
+                                          light->getIntensityAt(intersectionPoint);
+            }
         }
 
-        // calculate pixel color
-        pixelColor = (objectMaterial.getDiffuseColorAt(intersectionPoint) * lightAngle *
-                scene.getDirectionalLight().getDiffuseColor()) +
-                (objectMaterial.getSpecularColorAt(intersectionPoint) * specularValue *
-                 scene.getDirectionalLight().getSpecularColor());
+        // calculate reflection
+        double reflectionValue = objectMaterial.getReflectionValueAt(intersectionMapping);
+        Color reflectionColor(0, 0, 0);
+        if (reflectionDeep > 0 && reflectionValue > 0) {
+            double rayNormalDot = normal.dotProduct(negRayDirection);
+            Vector reflectionNormalDistance = 2 * ((normal * rayNormalDot) + rayDirection);
+            Vector reflectionDirection = (negRayDirection + reflectionNormalDistance).normalize();
+            Vector reflectionOrigin = intersectionPoint + (reflectionDirection * 0.0001);
+            Ray reflectionRay(reflectionOrigin, reflectionDirection);
+            reflectionColor = this->calculatePixelColor(scene, reflectionRay, reflectionDeep - 1);
+            pixelColor += reflectionValue * reflectionColor;
+        }
     }
     else {
-        pixelColor = Color(0, 0, 0, 1);
+        pixelColor = Color(0, 0, 0, 0);
     }
     return pixelColor;
 }

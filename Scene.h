@@ -12,15 +12,17 @@
 
 class Scene {
 public:
-    Scene(Camera &camera, DirectionalLight &directionalLight , vector<Object*> &objects);
+    Scene(Camera &camera, Color &ambientColor, vector<Light*> &lights, vector<Object*> &objects);
     Camera &getCamera() const ;
-    DirectionalLight &getDirectionalLight() const ;
-    vector<Object*>& getObjectsList() const ;
+    Color &getAmbientColor() const ;
+    vector<Light*> &getLightsList() const ;
+    vector<Object*> &getObjectsList() const ;
 
     bool getIntersectionPoint(Ray &ray, Vector &intersectionPoint, Object *&intersectionObject) const ;
 private:
     Camera &camera;
-    DirectionalLight &directionalLight;
+    Color &ambientColor;
+    vector<Light *> &lightsList;
     vector<Object*> &objectsList;
 };
 

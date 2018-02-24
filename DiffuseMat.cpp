@@ -19,3 +19,7 @@ Color DiffuseMat::getSpecularColorAt(Vector &position) {
 double DiffuseMat::getSpecularHardnessAt(Vector &position) {
     return 1;
 }
+
+double DiffuseMat::getReflectionValueAt(Vector &position) {
+    return 0;
+}

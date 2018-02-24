@@ -14,6 +14,7 @@ public:
     virtual Color getDiffuseColorAt(Vector &position) = 0;
     virtual Color getSpecularColorAt(Vector &position) = 0;
     virtual double getSpecularHardnessAt(Vector &position) = 0;
+    virtual double getReflectionValueAt(Vector &position) = 0;
 };
 
 
